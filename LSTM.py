@@ -32,9 +32,8 @@ n_vocab = len(idx2w)
 # Define model
 model = Sequential()
 model.add(Embedding(n_vocab,100))
-model.add(Convolution1D(64,5,border_mode='same', activation='relu'))
 model.add(Dropout(0.25))
-model.add(GRU(100,return_sequences=True))
+model.add(LSTM(100,return_sequences=True))
 model.add(TimeDistributed(Dense(n_classes, activation='softmax')))
 model.compile('rmsprop', 'categorical_crossentropy')
 
@@ -79,7 +78,7 @@ for i in range(n_epochs):
     avgLoss = avgLoss/n_batch
     
     predword_train = [ list(map(lambda x: idx2la[x], y)) for y in train_pred_label]
-    con_dict = conlleval(predword_train, groundtruth_train, words_train, 'r3.txt')
+    con_dict = conlleval(predword_train, groundtruth_train, words_train, 'r4.txt')
     train_f_scores.append(con_dict['f1'])
     print('Loss = {}, Precision = {}, Recall = {}, F1 = {}'.format(avgLoss, con_dict['r'], con_dict['p'], con_dict['f1']))
     
@@ -106,15 +105,15 @@ for i in range(n_epochs):
     avgLoss = avgLoss/n_batch
     
     predword_val = [ list(map(lambda x: idx2la[x], y)) for y in val_pred_label]
-    con_dict = conlleval(predword_val, groundtruth_val, words_val, 'r3.txt')
+    con_dict = conlleval(predword_val, groundtruth_val, words_val, 'r4.txt')
     val_f_scores.append(con_dict['f1'])
     
     print('Loss = {}, Precision = {}, Recall = {}, F1 = {}'.format(avgLoss, con_dict['r'], con_dict['p'], con_dict['f1']))
 
     if con_dict['f1'] > best_val_f1:
     	best_val_f1 = con_dict['f1']
-    	open('model_architecture.json','w').write(model.to_json())
-    	model.save_weights('best_model_weights.h5',overwrite=True)
+    	open('LSTM.json','w').write(model.to_json())
+    	model.save_weights('LSTM.h5',overwrite=True)
     	print("Best validation F1 score = {}".format(best_val_f1))
     print()
     

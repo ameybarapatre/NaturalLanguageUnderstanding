@@ -43,6 +43,7 @@ def get_perf(filename):
         os.system('wget https://www.comp.nus.edu.sg/%7Ekanmy/courses/practicalNLP_2008/packages/conlleval.pl')
         chmod('conlleval.pl', stat.S_IRWXU) # give the execute permissions
 
+    out = []
     proc = subprocess.Popen(["perl", _conlleval], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     stdout, _ = proc.communicate(open(filename,'rb').read())
     for line in stdout.decode("utf-8").split('\n'):
