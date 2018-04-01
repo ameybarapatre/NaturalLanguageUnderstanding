@@ -27,3 +27,4 @@ Here is an example sentence and its labels from the dataset:
 
 
 
+#### GRU CNN model, training and evaluation script forked from https://github.com/chsasank/ATIS.keras
